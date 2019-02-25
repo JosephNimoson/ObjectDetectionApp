@@ -16,7 +16,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
     //Initializing UIlabels Programmaticly
     let identifierLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .white
+        label.backgroundColor = UIColor(white: 1, alpha: 0.2)
         label.textAlignment = .center
         label.textColor = .red
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -31,7 +31,7 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         //MARK Camera setup
         let captureSession = AVCaptureSession()
         
-        captureSession.sessionPreset = .photo
+        captureSession.sessionPreset = AVCaptureSession.Preset.photo
         
         guard let captureDevice = AVCaptureDevice.default(for: .video) else {return}
         guard let input = try? AVCaptureDeviceInput(device: captureDevice) else {return}
@@ -43,6 +43,10 @@ class ViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDele
         
         view.layer.addSublayer(previewLayer)
         previewLayer.frame = view.frame
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        previewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
+        previewLayer.frame = self.view.frame
+        self.view.layer.insertSublayer(previewLayer, at: 0)
         
         let dataOutput = AVCaptureVideoDataOutput()
         
